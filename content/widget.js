@@ -26,9 +26,29 @@ function createRatingWidget(ratings, container) {
     widget.className = 'streamscore-widget';
     widget.setAttribute('data-streamscore', 'true');
 
-    // Build widget content
+    // Build widget content with logo
     let widgetHTML = '<div class="streamscore-header">';
-    widgetHTML += '<span class="streamscore-title">StreamScore</span>';
+
+    // Add logo SVG
+    widgetHTML += `
+        <div class="streamscore-header-brand">
+            <svg class="streamscore-logo-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="streamscore-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" 
+                      fill="url(#streamscore-gradient)" 
+                      stroke="url(#streamscore-gradient)" 
+                      stroke-width="1.5" 
+                      stroke-linejoin="round"/>
+            </svg>
+            <span class="streamscore-title">StreamScore</span>
+        </div>
+    `;
+
     widgetHTML += '<button class="streamscore-close" title="Close">×</button>';
     widgetHTML += '</div>';
 
