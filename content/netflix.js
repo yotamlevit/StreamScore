@@ -93,25 +93,36 @@
 
     /**
      * Find the best container to inject the widget
+     * Now targets the detail-modal-container's first ptrack-container for seamless integration
      * @param {number} retries - Number of retries left
      * @param {number} delay - Delay between retries in ms
      * @returns {Promise<Element|null>} Container element
      */
     async function findInjectionContainer(retries = 5, delay = 200) {
-        // Look for preview modal or title page metadata section
-        const containers = [
+        // Primary target: detail-modal-container → first ptrack-container
+        const detailModal = document.querySelector('.detail-modal-container');
+        if (detailModal) {
+            const firstPtrack = detailModal.querySelector('.ptrack-container');
+            if (firstPtrack && !firstPtrack.querySelector('.streamscore-widget')) {
+                debugLog('Found seamless injection point: detail-modal-container > first ptrack-container');
+                return firstPtrack;
+            }
+        }
+
+        // Fallback to original selectors if detail-modal not available
+        const fallbackContainers = [
             '.previewModal--metadatAndControls',
             '.previewModal--info',
             '[data-uia="info-container"]',
             '.title-info-metadata',
             '.supplemental-message-container',
-            '.previewModal--container' // Add broader container as fallback
+            '.previewModal--container'
         ];
 
-        for (const selector of containers) {
+        for (const selector of fallbackContainers) {
             const container = document.querySelector(selector);
             if (container && !container.querySelector('.streamscore-widget')) {
-                debugLog('Found injection container:', selector);
+                debugLog('Found fallback injection container:', selector);
                 return container;
             }
         }
