@@ -1,0 +1,21 @@
+# Development and troubleshooting notes
+*_FIX.md
+CONTEXT_FIX.md
+CHROME_API_FIX.md
+CONTAINER_FIX.md
+ICON_FIX.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp

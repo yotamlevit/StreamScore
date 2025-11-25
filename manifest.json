@@ -1,0 +1,91 @@
+{
+  "manifest_version": 3,
+  "name": "StreamScore - Ratings for Streaming",
+  "version": "1.0.0",
+  "description": "Display IMDb and Rotten Tomatoes ratings on Netflix, Disney+, Apple TV+, and Prime Video",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://www.omdbapi.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.netflix.com/browse*",
+        "https://www.netflix.com/title/*"
+      ],
+      "js": [
+        "content/utils.js",
+        "content/widget.js",
+        "content/netflix.js"
+      ],
+      "css": [
+        "content/widget.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.disneyplus.com/*"
+      ],
+      "js": [
+        "content/utils.js",
+        "content/widget.js",
+        "content/disney.js"
+      ],
+      "css": [
+        "content/widget.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://tv.apple.com/*/show/*",
+        "https://tv.apple.com/*/movie/*"
+      ],
+      "js": [
+        "content/utils.js",
+        "content/widget.js",
+        "content/appletv.js"
+      ],
+      "css": [
+        "content/widget.css"
+      ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://www.amazon.com/gp/video/*",
+        "https://www.primevideo.com/*"
+      ],
+      "js": [
+        "content/utils.js",
+        "content/widget.js",
+        "content/prime.js"
+      ],
+      "css": [
+        "content/widget.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

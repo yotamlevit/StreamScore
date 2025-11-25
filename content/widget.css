@@ -1,0 +1,283 @@
+/* StreamScore Widget Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.streamscore-widget {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  position: relative;
+  background: linear-gradient(135deg, rgba(20, 20, 30, 0.95) 0%, rgba(30, 30, 45, 0.92) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 40px rgba(139, 92, 246, 0.15);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  max-width: 500px;
+  z-index: 999999;
+  color: #ffffff;
+}
+
+.streamscore-widget-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.streamscore-widget-hiding {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Header */
+.streamscore-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.streamscore-title {
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.streamscore-close {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  line-height: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.streamscore-close:hover {
+  background: rgba(239, 68, 68, 0.8);
+  transform: scale(1.05);
+}
+
+/* Content */
+.streamscore-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Rating Block */
+.streamscore-rating {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.streamscore-rating:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 92, 246, 0.3);
+  transform: translateX(2px);
+}
+
+.streamscore-rating-source {
+  flex: 1;
+}
+
+.streamscore-logo {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  letter-spacing: 0.02em;
+}
+
+.streamscore-logo-imdb {
+  background: linear-gradient(135deg, #f5c518 0%, #e6b800 100%);
+  color: #000;
+}
+
+.streamscore-logo-rt {
+  background: linear-gradient(135deg, #fa320a 0%, #d62900 100%);
+  color: #fff;
+}
+
+.streamscore-logo-rt.fresh {
+  background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+}
+
+.streamscore-logo-rt.rotten {
+  background: linear-gradient(135deg, #0ac855 0%, #089c44 100%);
+}
+
+.streamscore-logo-rt-audience {
+  background: linear-gradient(135deg, #0ac855 0%, #089c44 100%);
+  color: #fff;
+}
+
+.streamscore-logo-rt-audience.rotten {
+  background: linear-gradient(135deg, #ff6347 0%, #cc4030 100%);
+}
+
+.streamscore-logo-meta {
+  background: linear-gradient(135deg, #00ce7a 0%, #00a862 100%);
+  color: #000;
+  font-weight: 700;
+}
+
+.streamscore-rating-value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 0 12px;
+}
+
+.streamscore-score {
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.streamscore-score-max {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.streamscore-meta-high {
+  color: #00ce7a;
+}
+
+.streamscore-meta-mid {
+  color: #ffbd3f;
+}
+
+.streamscore-meta-low {
+  color: #ff6874;
+}
+
+.streamscore-link {
+  font-size: 12px;
+  color: #8b5cf6;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 12px;
+  background: rgba(139, 92, 246, 0.15);
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.streamscore-link:hover {
+  background: rgba(139, 92, 246, 0.25);
+  color: #a78bfa;
+  transform: translateX(2px);
+}
+
+/* Loading State */
+.streamscore-widget-loading .streamscore-content {
+  text-align: center;
+  padding: 20px;
+}
+
+.streamscore-loader {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 12px;
+  border: 3px solid rgba(139, 92, 246, 0.2);
+  border-top: 3px solid #8b5cf6;
+  border-radius: 50%;
+  animation: streamscore-spin 0.8s linear infinite;
+}
+
+@keyframes streamscore-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.streamscore-widget-loading p {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* Error State */
+.streamscore-widget-error {
+  background: linear-gradient(135deg, rgba(30, 20, 20, 0.95) 0%, rgba(40, 25, 25, 0.92) 100%);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.streamscore-error-message {
+  color: #fca5a5;
+  font-size: 14px;
+  margin: 0;
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .streamscore-widget {
+    margin: 12px 0;
+    padding: 16px;
+  }
+
+  .streamscore-rating {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .streamscore-rating-value {
+    margin: 0;
+  }
+
+  .streamscore-score {
+    font-size: 24px;
+  }
+}
+
+/* Platform-specific adjustments */
+
+/* Netflix */
+.streamscore-widget[data-platform="netflix"] {
+  max-width: 600px;
+}
+
+/* Disney+ */
+.streamscore-widget[data-platform="disney"] {
+  max-width: 550px;
+}
+
+/* Apple TV+ */
+.streamscore-widget[data-platform="appletv"] {
+  max-width: 500px;
+}
+
+/* Prime Video */
+.streamscore-widget[data-platform="prime"] {
+  max-width: 600px;
+}
