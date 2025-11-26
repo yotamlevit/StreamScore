@@ -10,85 +10,63 @@
     let processingTimeout = null;
 
     /**
-     * Extract title information from Apple TV+ page
+     * Extract title information from Apple TV+ page using JSON-LD schema
      * @returns {Object|null} Title data or null
      */
     function extractTitleInfo() {
-        // Apple TV+ selectors
-        const selectors = [
-            'h1.product-header__title',
-            'h1[data-test-id="product-title"]',
-            '.product-header h1',
-            'h1.episode-header__title',
-            '.canvas-header__title h1'
-        ];
+        debugLog('Extracting title info from Apple TV+ schema data');
 
-        let titleElement = null;
-        let titleText = '';
+        // Look for JSON-LD schema scripts
+        // Movies: <script id="schema:movie" type="application/ld+json">
+        // TV Series: <script id="schema:tv-series" type="application/ld+json">
+        const movieSchema = document.querySelector('script#schema\\:movie[type="application/ld+json"]');
+        const seriesSchema = document.querySelector('script#schema\\:tv-series[type="application/ld+json"]');
 
-        for (const selector of selectors) {
-            titleElement = document.querySelector(selector);
-            if (titleElement) {
-                titleText = titleElement.textContent || titleElement.innerText || '';
-                if (titleText.trim()) {
-                    debugLog('Found Apple TV+ title:', selector, titleText);
-                    break;
-                }
-            }
-        }
-
-        if (!titleText) {
-            debugLog('No title found on Apple TV+ page');
+        const schemaElement = movieSchema || seriesSchema;
+        
+        if (!schemaElement) {
+            debugLog('No JSON-LD schema found on Apple TV+ page');
             return null;
         }
 
-        titleText = cleanTitle(titleText);
+        try {
+            const schemaData = JSON.parse(schemaElement.textContent);
+            debugLog('Parsed schema data:', schemaData);
 
-        // Extract year from metadata
-        let year = null;
-        const metadataSelectors = [
-            '.product-header__metadata',
-            '.product-header__info',
-            '[data-test-id="product-metadata"]'
-        ];
-
-        for (const selector of metadataSelectors) {
-            const element = document.querySelector(selector);
-            if (element) {
-                year = extractYear(element.textContent);
-                if (year) break;
+            // Extract title
+            const title = schemaData.name;
+            if (!title) {
+                debugLog('No title found in schema data');
+                return null;
             }
-        }
 
-        // Determine type based on URL and page elements
-        let type = 'movie';
-        const currentUrl = window.location.href;
+            // Extract year from datePublished (format: "2023-12-15T00:00:00.000Z")
+            let year = null;
+            if (schemaData.datePublished) {
+                const date = new Date(schemaData.datePublished);
+                year = date.getFullYear();
+                debugLog('Extracted year from datePublished:', year);
+            }
 
-        if (currentUrl.includes('/show/')) {
-            type = 'series';
-        } else if (currentUrl.includes('/movie/')) {
-            type = 'movie';
-        }
-
-        // Also check for season/episode indicators
-        const seriesIndicators = [
-            '.episode-list',
-            '[data-test-id="season-selector"]',
-            '.episode-lockup'
-        ];
-
-        for (const selector of seriesIndicators) {
-            if (document.querySelector(selector)) {
+            // Determine type from @type field
+            let type = 'movie';
+            if (schemaData['@type'] === 'TVSeries') {
                 type = 'series';
-                break;
+            } else if (schemaData['@type'] === 'Movie') {
+                type = 'movie';
             }
-        }
 
-        return {
-            title: titleText,
-            year: year,
-            type: type
-        };
+            debugLog(`Extracted from schema: title="${title}", year=${year}, type=${type}`);
+
+            return {
+                title: cleanTitle(title),
+                year: year,
+                type: type
+            };
+        } catch (error) {
+            debugLog('Error parsing JSON-LD schema:', error);
+            return null;
+        }
     }
 
     /**
