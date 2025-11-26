@@ -10,6 +10,19 @@ StreamScore is a browser extension that automatically shows movie and TV show ra
 
 _StreamScore automatically displays IMDb and Rotten Tomatoes ratings on Netflix detail pages and hover previews._
 
+<details>
+<summary>📸 More Screenshots</summary>
+
+### Netflix Detail Page
+
+![Netflix Widget on Detail Page](docs/screenshots/Netflix_Detailed_Screen.png)
+
+### Netflix Hover Preview (Mini-Modal)
+
+![Netflix Widget in Hover Preview](docs/screenshots/Netflix_Preview.png)
+
+</details>
+
 ![StreamScore Icon](icons/icon128.png)
 
 ## Features
