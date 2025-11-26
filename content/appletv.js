@@ -71,31 +71,39 @@
 
     /**
      * Find injection container for Apple TV+
+     * Creates a container div and inserts it before the Trailers/Episodes section
+     * @param {string} contentType - 'movie' or 'series' to determine which section to target
      * @returns {Element|null} Container element
      */
-    function findInjectionContainer() {
-        const containers = [
-            '.product-header__info-text',
-            '.product-header__metadata-block',
-            '[data-test-id="product-description"]',
-            '.product-info'
-        ];
-
-        for (const selector of containers) {
-            const container = document.querySelector(selector);
-            if (container && !container.querySelector('.streamscore-widget')) {
-                debugLog('Found Apple TV+ injection container:', selector);
-                return container;
-            }
+    function findInjectionContainer(contentType = 'movie') {
+        // Check if we already created a container
+        const existingContainer = document.querySelector('.streamscore-appletv-container');
+        if (existingContainer) {
+            debugLog('Found existing StreamScore container');
+            return existingContainer;
         }
 
-        // Fallback to product header
-        const fallback = document.querySelector('.product-header');
-        if (fallback && !fallback.querySelector('.streamscore-widget')) {
-            return fallback;
+        // For movies: inject before "Trailers" section
+        // For TV shows: inject before "Episodes" section
+        const targetLabel = contentType === 'movie' ? 'Trailers' : 'Episodes';
+        const targetSection = document.querySelector(`.section[aria-label="${targetLabel}"]`);
+
+        if (targetSection) {
+            debugLog(`Found ${targetLabel} section, creating container before it`);
+            
+            // Create a container div for our widget
+            const container = document.createElement('div');
+            container.className = 'streamscore-appletv-container';
+            container.style.cssText = 'margin: 20px 0; padding: 0 48px;';
+            
+            // Insert before the target section
+            targetSection.parentNode.insertBefore(container, targetSection);
+            
+            debugLog('Container created and inserted successfully');
+            return container;
         }
 
-        debugLog('No suitable injection container found on Apple TV+');
+        debugLog(`No ${targetLabel} section found on Apple TV+ page`);
         return null;
     }
 
@@ -123,7 +131,7 @@
             currentTitle = titleInfo.title;
             debugLog('Processing Apple TV+ title:', titleInfo);
 
-            const container = findInjectionContainer();
+            const container = findInjectionContainer(titleInfo.type);
             if (!container) {
                 debugLog('No injection container found');
                 return;
@@ -136,7 +144,7 @@
                 debugLog('Received ratings:', ratings);
 
                 if (ratings && ratings.success) {
-                    const widgetContainer = findInjectionContainer();
+                    const widgetContainer = findInjectionContainer(titleInfo.type);
                     if (widgetContainer) {
                         const widget = createRatingWidget(ratings, widgetContainer);
                         if (widget) {
@@ -148,7 +156,7 @@
                 }
             } catch (error) {
                 debugLog('Error fetching ratings:', error);
-                const errorContainer = findInjectionContainer();
+                const errorContainer = findInjectionContainer(titleInfo.type);
                 if (errorContainer) {
                     showErrorWidget(error.message, errorContainer);
                 }
@@ -182,6 +190,14 @@
             if (url !== lastUrl) {
                 lastUrl = url;
                 debugLog('Apple TV+ URL changed:', url);
+                
+                // Clean up old container if navigating away from a detail page
+                const container = document.querySelector('.streamscore-appletv-container');
+                if (container) {
+                    debugLog('Removing old widget container');
+                    container.remove();
+                }
+                
                 currentTitle = null;
                 processPage();
             }
