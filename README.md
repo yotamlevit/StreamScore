@@ -4,11 +4,18 @@
 
 StreamScore is a browser extension that automatically shows movie and TV show ratings from IMDb and Rotten Tomatoes when you browse your favorite streaming platforms. Make informed decisions about what to watch without leaving the streaming site.
 
-![StreamScore Widget](icons/icon128.png)
+## 🎥 See It In Action
+
+![StreamScore Demo](docs/videos/netflix-demo.gif)
+
+_StreamScore automatically displays IMDb and Rotten Tomatoes ratings on Netflix detail pages and hover previews._
+
+![StreamScore Icon](icons/icon128.png)
 
 ## Features
 
 ✨ **Automatic Rating Display**
+
 - Shows ratings on movie/show preview pages before you start watching
 - IMDb ratings with vote counts
 - Rotten Tomatoes critic scores (Tomatometer)
@@ -16,18 +23,21 @@ StreamScore is a browser extension that automatically shows movie and TV show ra
 - Metacritic scores (bonus)
 
 🎯 **Supported Platforms**
+
 - **Netflix** - Browse and title pages
 - **Disney+** - All content detail pages
 - **Apple TV+** - Show and movie pages
 - **Amazon Prime Video** - Video detail pages
 
 🎨 **Beautiful Design**
+
 - Modern glassmorphism UI
 - Dark theme that blends seamlessly with streaming platforms
 - Smooth animations and transitions
 - Non-intrusive and dismissible
 
 🔒 **Privacy First**
+
 - No data collection
 - No tracking
 - API key stored locally
@@ -38,15 +48,18 @@ StreamScore is a browser extension that automatically shows movie and TV show ra
 ### Chrome / Edge / Brave / Opera (Chromium-based browsers)
 
 1. **Download the Extension**
+
    - Clone or download this repository
    - Or download the latest release ZIP
 
 2. **Get a Free OMDb API Key**
+
    - Visit [http://www.omdbapi.com/apikey.aspx](http://www.omdbapi.com/apikey.aspx)
    - Select "FREE" plan (1,000 daily requests)
    - Enter your email and activate your key
 
 3. **Install the Extension**
+
    - Open your browser and navigate to:
      - Chrome: `chrome://extensions/`
      - Edge: `edge://extensions/`
@@ -64,10 +77,12 @@ StreamScore is a browser extension that automatically shows movie and TV show ra
 ## Usage
 
 1. **Browse Any Supported Platform**
+
    - Go to Netflix, Disney+, Apple TV+, or Prime Video
    - Navigate to any movie or show preview/details page
 
 2. **View Ratings Automatically**
+
    - StreamScore will automatically detect the title
    - Ratings will appear in a sleek widget on the page
    - Click the rating sources to view full details on IMDb/RT
@@ -107,7 +122,7 @@ StreamScore is a browser extension that automatically shows movie and TV show ra
 StreamScore/
 ├── manifest.json           # Extension configuration
 ├── background.js           # Service worker (API calls)
-├── content/               
+├── content/
 │   ├── utils.js           # Shared utilities
 │   ├── widget.js          # Widget creation
 │   ├── widget.css         # Widget styling
@@ -133,6 +148,7 @@ StreamScore/
 ### Testing
 
 **Quick Test:**
+
 ```bash
 # 1. Install extension in Chrome/Edge
 # 2. Configure OMDb API key in popup
@@ -143,6 +159,7 @@ StreamScore/
 ## API Rate Limits
 
 The free OMDb API tier includes:
+
 - **1,000 requests per day**
 - StreamScore caches results for 24 hours to minimize API usage
 - Average user typically uses 10-50 requests per day
@@ -150,22 +167,26 @@ The free OMDb API tier includes:
 ## Troubleshooting
 
 ### Widget Not Appearing?
+
 - ✓ Check that your API key is configured (click extension icon)
 - ✓ Verify you're on a title preview/details page (not the homepage)
 - ✓ Try refreshing the page
 - ✓ Check browser console for errors (F12)
 
 ### "Invalid API Key" Error?
+
 - ✓ Ensure you activated your API key via the email from OMDb
 - ✓ Check for typos when pasting the key
 - ✓ Try generating a new key at omdbapi.com
 
 ### Ratings Not Accurate?
+
 - Ratings are fetched from OMDb database
 - Some titles may have different naming conventions
 - Try the direct IMDb/RT links to verify
 
 ### Widget Blocking Content?
+
 - Click the × button to dismiss
 - Widget is designed to be non-intrusive
 - Report layout issues on GitHub
@@ -173,6 +194,7 @@ The free OMDb API tier includes:
 ## Contributing
 
 Contributions are welcome! Please feel free to:
+
 - Report bugs
 - Suggest new features
 - Submit pull requests
@@ -190,6 +212,7 @@ Contributions are welcome! Please feel free to:
 ## Privacy Policy
 
 StreamScore does not collect, store, or transmit any personal data. All data processing happens locally in your browser:
+
 - API key is stored in local browser storage only
 - Rating requests go directly to OMDb API
 - No analytics or tracking
@@ -208,6 +231,7 @@ MIT License - see LICENSE file for details
 ## Support
 
 For issues, questions, or suggestions:
+
 - Open an issue on GitHub
 - Check the troubleshooting section above
 

@@ -19,3 +19,9 @@ Thumbs.db
 # Temporary files
 *.log
 *.tmp
+
+# Documentation - Large video files (use GIFs for README instead)
+docs/videos/*.mp4
+docs/videos/*.mov
+docs/videos/*.avi
+docs/videos/*.webm
