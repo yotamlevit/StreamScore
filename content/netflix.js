@@ -239,10 +239,149 @@
     }
 
     /**
+     * Handle mini preview modals (hover previews)
+     */
+    let processedMiniModals = new Set();
+
+    function handleMiniModal(modalElement) {
+        // Check if we've already processed this modal
+        const modalId = modalElement.getAttribute('data-streamscore-processed');
+        if (modalId) {
+            return;
+        }
+
+        // Mark as processed
+        const processingId = Date.now().toString();
+        modalElement.setAttribute('data-streamscore-processed', processingId);
+        processedMiniModals.add(processingId);
+
+        debugLog('Mini-modal detected, extracting title...');
+
+        // Extract title from boxart alt attribute
+        const boxartImg = modalElement.querySelector('.previewModal--boxart[alt]:not([alt=""])');
+        if (!boxartImg) {
+            debugLog('No boxart with alt found in mini-modal');
+            return;
+        }
+
+        const titleText = boxartImg.getAttribute('alt').trim();
+        if (!titleText) {
+            debugLog('Empty alt text in mini-modal');
+            return;
+        }
+
+        debugLog('Found title from mini-modal boxart:', titleText);
+
+        // Determine type: check duration element text
+        // Movies: "2h 45m" or "90m" (time format)
+        // TV Shows: "11 Seasons", "Limited Series", "10 Episodes", etc.
+        const durationElement = modalElement.querySelector('.videoMetadata--container .duration');
+        let type = 'movie'; // Default
+        
+        if (durationElement) {
+            const durationText = durationElement.textContent.trim().toLowerCase();
+            debugLog('Duration text:', durationText);
+            
+            // Check if it's a TV show pattern
+            if (durationText.includes('season') || 
+                durationText.includes('series') || 
+                durationText.includes('episode')) {
+                type = 'series';
+            }
+            // Otherwise if it matches time format (contains 'h' or 'm' for hours/minutes), it's a movie
+            else if (durationText.match(/\d+[hm]/)) {
+                type = 'movie';
+            }
+        }
+        
+        debugLog(`Detected type: ${type} based on duration: "${durationElement?.textContent.trim()}"`);
+
+        // Create title info object
+        const titleInfo = {
+            title: titleText,
+            year: null, // Don't have year in mini-modal
+            type: type
+        };
+
+        // Find injection point in mini-modal
+        const metadataContainer = modalElement.querySelector('.previewModal--metadatAndControls-container');
+        if (!metadataContainer) {
+            debugLog('No metadata container found in mini-modal');
+            return;
+        }
+
+        // Show loading widget immediately
+        showLoadingWidget(metadataContainer);
+
+        // Fetch ratings
+        getRatings(titleInfo.title, titleInfo.year, titleInfo.type).then(ratings => {
+            debugLog('Mini-modal ratings received:', ratings);
+
+            // Re-check that modal still exists (user might have moved mouse away)
+            if (!document.contains(modalElement)) {
+                debugLog('Mini-modal was removed before ratings arrived');
+                return;
+            }
+
+            if (ratings.success) {
+                createRatingWidget(ratings, metadataContainer);
+            } else {
+                showErrorWidget(ratings.error || 'Could not find ratings', metadataContainer);
+            }
+        }).catch(error => {
+            debugLog('Error fetching mini-modal ratings:', error);
+            if (document.contains(modalElement)) {
+                showErrorWidget('Error loading ratings', metadataContainer);
+            }
+        });
+    }
+
+    /**
+     * Watch for mini-modal appearances
+     */
+    function watchForMiniModals() {
+        // Use MutationObserver to detect when mini-modals are added to DOM
+        const miniModalObserver = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                mutation.addedNodes.forEach(node => {
+                    if (node.nodeType === 1) { // Element node
+                        // Check if this is a mini-modal
+                        if (node.classList && node.classList.contains('previewModal--container') && 
+                            node.classList.contains('mini-modal')) {
+                            handleMiniModal(node);
+                        }
+                        
+                        // Also check children in case modal was added as part of larger DOM change
+                        const miniModals = node.querySelectorAll && 
+                            node.querySelectorAll('.previewModal--container.mini-modal');
+                        if (miniModals) {
+                            miniModals.forEach(modal => handleMiniModal(modal));
+                        }
+                    }
+                });
+            });
+        });
+
+        miniModalObserver.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
+        debugLog('Started watching for mini-modals');
+
+        // Also check for any existing mini-modals on page load
+        const existingModals = document.querySelectorAll('.previewModal--container.mini-modal');
+        existingModals.forEach(modal => handleMiniModal(modal));
+    }
+
+    /**
      * Initialize the Netflix observer
      */
     function init() {
         debugLog('Initializing Netflix observer');
+
+         // Watch for mini-modals (hover previews)
+        watchForMiniModals();
 
         // Process initial page
         processPage();
