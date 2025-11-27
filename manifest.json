@@ -19,7 +19,11 @@
       "run_at": "document_idle"
     },
     {
-      "matches": ["https://www.disneyplus.com/*"],
+      "matches": [
+        "https://www.disneyplus.com/*",
+        "https://*.apps.disneyplus.com/*",
+        "https://redeem.apps.disneyplus.com/*"
+      ],
       "js": ["content/utils.js", "content/widget.js", "content/disney.js"],
       "css": ["content/widget.css"],
       "run_at": "document_idle"
