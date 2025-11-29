@@ -37,8 +37,8 @@ _StreamScore automatically displays IMDb and Rotten Tomatoes ratings on Netflix 
 
 🎯 **Supported Platforms**
 
-- **Netflix** - Browse and title pages
-- **Disney+** - All content detail pages
+- **Netflix** - Browse and title pages, including hover previews
+- **Disney+** - ⚠️ _Currently not working, under development_
 - **Apple TV+** - Show and movie pages
 - **Amazon Prime Video** - Video detail pages
 
