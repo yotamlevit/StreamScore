@@ -13,6 +13,7 @@
 ### Chrome / Edge / Brave
 
 1. Open browser and go to:
+
    - Chrome: `chrome://extensions/`
    - Edge: `edge://extensions/`
    - Brave: `brave://extensions/`
@@ -21,7 +22,7 @@
 
 3. Click **Load unpacked**
 
-4. Select folder: `/Users/yotamlevit/Code/StreamScore`
+4. Select folder: `/path/to/StreamScore`
 
 ## Configuring the Extension
 
@@ -39,24 +40,29 @@
 ### Important URLs to Test:
 
 **Netflix:**
+
 - Browse and select any title
 - URL will be: `netflix.com/browse?jbv=...` or `netflix.com/title/...`
 
 **Disney+:**
+
 - Click on any content to see details
 
 **Apple TV+:**
+
 - Navigate to show: `tv.apple.com/us/show/...`
 - Or movie: `tv.apple.com/us/movie/...`
 
 ## Widget Features
 
 📊 **Displays:**
+
 - IMDb rating (out of 10)
 - Rotten Tomatoes critic score
 - Direct links to IMDb and RT
 
 🎨 **Interactive:**
+
 - Click × to dismiss
 - Click links to open full pages
 - Auto-updates when you navigate
@@ -64,16 +70,19 @@
 ## Troubleshooting
 
 **Widget not showing?**
+
 - Make sure you're on a title preview/details page (not homepage)
 - Check API key is saved (click extension icon)
 - Try refreshing the page
 
 **Invalid API Key?**
+
 - Make sure you clicked the activation link in your email
 - Check for typos
 - Try generating a new key
 
 **Need help?**
+
 - Press F12 to open console
 - Look for `[StreamScore]` logs
 - Check the walkthrough.md for detailed testing guide
